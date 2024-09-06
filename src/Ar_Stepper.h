@@ -34,7 +34,7 @@ private:
     bool inc = true;
     bool _set_dir = true;
 
-    long _stp = 0;
+    long _currentPosStep = 0;
     float _stepsPerMM; 
     float _currentPosMM = 0.0;
 };
