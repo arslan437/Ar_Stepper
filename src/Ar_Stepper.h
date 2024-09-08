@@ -25,7 +25,7 @@ public:
     void moveTo(float mm);  
     void move(float mm);
 
-    void setHoming(int limitSwitchPin, int homingSpeed); 
+    void setHoming(int limitSwitchPin, float homingSpeed);
     void home();
     void setStepsPerMM(float stepsPerMM);
 

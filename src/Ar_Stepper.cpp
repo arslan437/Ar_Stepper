@@ -16,7 +16,7 @@ void Ar_Stepper::begin()
 {
     pinMode(_stepPin, OUTPUT);
     pinMode(_dirPin, OUTPUT);
-    pinMode(_enPin, OUTPUT);
+    // pinMode(_enPin, OUTPUT);
 
     disable();
 }
@@ -40,12 +40,12 @@ void Ar_Stepper::dirInvert()
 
 void Ar_Stepper::enable()
 {
-    digitalWrite(_enPin, LOW);
+    // digitalWrite(_enPin, LOW);
 }
 
 void Ar_Stepper::disable()
 {
-    digitalWrite(_enPin, HIGH);
+    // digitalWrite(_enPin, HIGH);
 }
 
 void Ar_Stepper::takeStep()
@@ -145,6 +145,8 @@ void Ar_Stepper::setHoming(int limitSwitchPin, float homingSpeed)
     _limitSwitchPin = limitSwitchPin;
     _homingSpeed = homingSpeed;
     _homingEnabled = true;
+
+    pinMode(_limitSwitchPin, INPUT_PULLUP);
 }
 
 void Ar_Stepper::home()
@@ -154,26 +156,26 @@ void Ar_Stepper::home()
     }
 
     enable();
-    dir_ccw();  
+    dirCCW();  
 
     while (digitalRead(_limitSwitchPin) == HIGH) 
     {
         takeStep();
-        delay(1000 / _homingSpeed);  
+        // delay(1000 / _homingSpeed);  
     }
 
     // Back off a bit after hitting the limit switch
-    dir_cw();
+    dirCW();
     while (digitalRead(_limitSwitchPin) == LOW)
     { 
         takeStep();
-        delay(1000 / (_homingSpeed * 2));
+        // delay(1000 / (_homingSpeed * 2));
     }
 
     for (int i = 0; i < 20; i++) 
     { 
         takeStep();
-        delay(1000 / (_homingSpeed * 2)); 
+        // delay(1000 / (_homingSpeed * 2)); 
     }
 
     resetSteps(); 
