@@ -8,21 +8,21 @@ Ar_Stepper stepper(step, dir, en);
 
 void setup() 
 {
-    motor.begin();
-    motor.set_pulse_time(200);
-    motor.dir_cw();
-    motor.enable();
+    stepper.begin();
+    stepper.set_pulse_time(200);
+    stepper.dir_cw();
+    stepper.enable();
 
     for(int i =0 ; i<2000; i++)
     {
-        motor.takeStep();
+        stepper.takeStep();
     }
-    motor.backward();
+    stepper.backward();
     for(int i =0 ; i<2000; i++)
     {
-        motor.takeStep();
+        stepper.takeStep();
     }
-    motor.disable();
+    stepper.disable();
 }
 
 void loop() 
