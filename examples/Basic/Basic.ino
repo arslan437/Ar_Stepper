@@ -9,15 +9,16 @@ Ar_Stepper stepper(step, dir, en);
 void setup() 
 {
     stepper.begin();
-    stepper.set_pulse_time(200);
-    stepper.dir_cw();
+    stepper.setPulseWidth(200);
+    stepper.dirCW();
     stepper.enable();
 
     for(int i =0 ; i<2000; i++)
     {
         stepper.takeStep();
     }
-    stepper.backward();
+
+    stepper.dirCCW();
     for(int i =0 ; i<2000; i++)
     {
         stepper.takeStep();
