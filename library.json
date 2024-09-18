@@ -1,0 +1,20 @@
+{
+    "name": "Ar_Stepper",
+    "version": "1.0.0",
+    "description": "A lightweight stepper motor control library for Arduino.",
+    "keywords": ["stepper", "motor", "control"],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/arslan437/Ar_Stepper"
+    },
+    "authors": [
+      {
+        "name": "Muhammad Arslan",
+        "email": "email@example.com",
+        "maintainer": true
+      }
+    ],
+    "frameworks": "arduino",
+    "platforms": "*"
+  }
+  
