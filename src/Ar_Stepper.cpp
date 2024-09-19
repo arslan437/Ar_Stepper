@@ -108,10 +108,10 @@ void Ar_Stepper::resetSteps()
 void Ar_Stepper::moveTo(float mm)
 {
     float distance = mm - _currentPosMM;
-    move(distance);
+    moveBy(distance);
 }
 
-void Ar_Stepper::move(float mm)
+void Ar_Stepper::moveBy(float mm)
 {
     long stepsToMove = mm * _stepsPerMM;
 
