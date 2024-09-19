@@ -23,7 +23,7 @@ public:
 
     void takeStep();
     void moveTo(float mm);  
-    void move(float mm);
+    void moveBy(float mm);
 
     void setHoming(int limitSwitchPin, float homingSpeed);
     void home();
