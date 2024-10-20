@@ -24,13 +24,13 @@ void Ar_Stepper::begin()
 void Ar_Stepper::dirCCW()
 {
     digitalWrite(_dirPin, _set_dir);
-    inc = true;
+    inc = !_set_dir;
 }
 
 void Ar_Stepper::dirCW()
 {
     digitalWrite(_dirPin, !_set_dir);
-    inc = false;
+    inc = _set_dir;
 }
 
 void Ar_Stepper::dirInvert()
@@ -58,12 +58,12 @@ void Ar_Stepper::takeStep()
     if (inc == true)
     {
         _currentPosStep++;
-        _currentPosMM += 1.0 / _stepsPerMM;
+        // _currentPosMM += 1.0 / _stepsPerMM;
     }
     else
     {
         _currentPosStep--;
-        _currentPosMM -= 1.0 / _stepsPerMM;
+        // _currentPosMM -= 1.0 / _stepsPerMM;
     }
 }
 
@@ -99,6 +99,14 @@ void Ar_Stepper::setMaxDistance(float lengthMM)
     _maxLengthMM = lengthMM;
 }
 
+void Ar_Stepper::setCurrentPosition(float pos_mm)
+{
+    if (pos_mm < _maxLengthMM)
+    {
+        _currentPosStep = pos_mm * _stepsPerMM;
+    }
+}
+
 void Ar_Stepper::resetSteps()
 {
     _currentPosStep = 0;
@@ -107,6 +115,7 @@ void Ar_Stepper::resetSteps()
 
 void Ar_Stepper::moveTo(float mm)
 {
+    _currentPosMM = _currentPosStep * _stepsPerMM;
     float distance = mm - _currentPosMM;
     moveBy(distance);
 }
@@ -137,7 +146,7 @@ void Ar_Stepper::moveBy(float mm)
 
 float Ar_Stepper::getPosition()
 {
-    return _currentPosMM;
+    return _currentPosStep/_stepsPerMM;
 }
 
 void Ar_Stepper::setHoming(int limitSwitchPin, float homingSpeed)

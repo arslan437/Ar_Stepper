@@ -1,6 +1,6 @@
 {
     "name": "Ar_Stepper",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A lightweight stepper motor control library for Arduino.",
     "keywords": ["stepper", "motor", "control"],
     "repository": {

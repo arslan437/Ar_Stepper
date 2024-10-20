@@ -2,6 +2,11 @@
 #define Ar_Stepper_h
 #include <Arduino.h>
 
+/*
+ * To do list 
+ * Set the distance to current values.
+ */
+
 class Ar_Stepper
 {
 
@@ -30,6 +35,7 @@ public:
     void setStepsPerMM(float stepsPerMM);
 
     void setMaxDistance(float lengthMM);
+    void setCurrentPosition(float pos_mm);
 
     void resetSteps();
 
@@ -44,7 +50,9 @@ private:
 
     int _pulseWidthMicros;
     float _stepsPerMM;
+
     float _maxLengthMM = -1; 
+    
     float _speedMMperSEC = 0;
     int _homingSpeed;
 
