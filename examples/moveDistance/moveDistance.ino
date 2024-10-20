@@ -17,11 +17,11 @@ void setup() {
 
 void loop() {
     // Move 10mm forward
-    myStepper.move(10);
+    myStepper.moveBy(10);
     delay(1000);
 
     // Move 5mm backward
-    myStepper.move(-5);
+    myStepper.moveBy(-5);
     delay(1000);
 
     // Move to absolute position 0mm
