@@ -25,6 +25,7 @@ public:
 
     void setSpeedInMMPerSecond(float speed_mm_per_sec);
     void setPulseWidth(int tim);
+    void setHomeMoveOut(int steps);
 
     void takeStep();
     void moveTo(float mm);  
@@ -50,6 +51,7 @@ private:
 
     int _pulseWidthMicros;
     float _stepsPerMM;
+    int _limit_move_out_steps;
 
     float _maxLengthMM = -1; 
     

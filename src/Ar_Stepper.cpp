@@ -72,6 +72,11 @@ void Ar_Stepper::setPulseWidth(int tim)
     _pulseWidthMicros = (float)tim / 2.0;
 }
 
+void Ar_Stepper::setHomeMoveOut(int steps);
+{
+    _limit_move_out_steps = steps;
+}
+
 void Ar_Stepper::setSpeedInMMPerSecond(float speed_mm_per_sec) 
 {
     _speedMMperSEC = speed_mm_per_sec;
@@ -185,7 +190,7 @@ void Ar_Stepper::home()
         // delay(1000 / (_homingSpeed * 2));
     }
 
-    for (int i = 0; i < 100; i++) 
+    for (int i = 0; i < _limit_move_out_steps; i++) 
     { 
         takeStep();
         // delay(1000 / (_homingSpeed * 2)); 
