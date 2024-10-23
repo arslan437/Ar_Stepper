@@ -185,7 +185,7 @@ void Ar_Stepper::home()
         // delay(1000 / (_homingSpeed * 2));
     }
 
-    for (int i = 0; i < 50; i++) 
+    for (int i = 0; i < 100; i++) 
     { 
         takeStep();
         // delay(1000 / (_homingSpeed * 2)); 
