@@ -72,7 +72,7 @@ void Ar_Stepper::setPulseWidth(int tim)
     _pulseWidthMicros = (float)tim / 2.0;
 }
 
-void Ar_Stepper::setHomeMoveOut(int steps);
+void Ar_Stepper::setHomeMoveOut(int steps)
 {
     _limit_move_out_steps = steps;
 }
