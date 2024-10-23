@@ -139,8 +139,12 @@ void Ar_Stepper::moveBy(float mm)
         dirCCW();
     }
 
-    for (long i = 0; i < abs(stepsToMove); i++) {
-        takeStep();
+    for (long i = 0; i < abs(stepsToMove); i++) 
+    {
+        if (digitalRead(_limitSwitchPin) == HIGH)
+        {
+            takeStep();
+        }
     }
 }
 
@@ -181,7 +185,7 @@ void Ar_Stepper::home()
         // delay(1000 / (_homingSpeed * 2));
     }
 
-    for (int i = 0; i < 20; i++) 
+    for (int i = 0; i < 50; i++) 
     { 
         takeStep();
         // delay(1000 / (_homingSpeed * 2)); 
