@@ -30,6 +30,9 @@ public:
     void takeStep();
     void moveTo(float mm);  
     void moveBy(float mm);
+    void asyncMoveTo(float mm);
+    void asyncMoveBy(float mm);
+    bool asyncRun();
 
     void setHoming(int limitSwitchPin, float homingSpeed);
     void home();
@@ -64,6 +67,10 @@ private:
 
     long _currentPosStep = 0;
     float _currentPosMM = 0.0;
+
+    bool _asyncMoving = false;
+    long _targetPositionStep = 0;
+    unsigned long _lastStepTime = 0;
 };
 
 #endif

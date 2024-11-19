@@ -132,7 +132,7 @@ void Ar_Stepper::moveBy(float mm)
     if (_maxLengthMM > 0)
     {
         float newPosMM = _currentPosMM + mm;
-        if (newPosMM > _maxLengthMM)
+        if (newPosMM < _maxLengthMM)
         {
             stepsToMove = (_maxLengthMM - _currentPosMM) * _stepsPerMM;
         }
@@ -151,6 +151,46 @@ void Ar_Stepper::moveBy(float mm)
             takeStep();
         }
     }
+}
+
+void Ar_Stepper::asyncMoveTo(float mm) 
+{
+    _targetPositionStep = mm * _stepsPerMM; 
+    _asyncMoving = true; 
+    _lastStepTime = micros(); 
+}
+
+void Ar_Stepper::asyncMoveBy(float mm) 
+{
+    asyncMoveTo(getPosition() + mm);
+}
+
+bool Ar_Stepper::asyncRun() 
+{
+    if (!_asyncMoving)
+    {
+        return false; 
+    }
+
+    if (micros() - _lastStepTime >= _pulseWidthMicros) 
+    {
+        _lastStepTime = micros(); 
+
+        if (_currentPosStep < _targetPositionStep) {
+            dirCW();
+            takeStep();
+        } else if (_currentPosStep > _targetPositionStep) {
+            dirCCW();
+            takeStep();
+        }
+
+        // Check if the target is reached
+        if (_currentPosStep == _targetPositionStep) {
+            _asyncMoving = false; // Movement complete
+        }
+    }
+
+    return _asyncMoving; // Return true if still moving
 }
 
 float Ar_Stepper::getPosition()
