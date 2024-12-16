@@ -30,6 +30,7 @@ public:
     void takeStep();
     void moveTo(float mm);  
     void moveBy(float mm);
+    void asyncTakeStep();
     void asyncMoveTo(float mm);
     void asyncMoveBy(float mm);
     bool asyncRun();
@@ -52,7 +53,8 @@ private:
     int _enPin;
     int _limitSwitchPin;
 
-    int _pulseWidthMicros;
+    int _pulseWidthMicros = 1;
+    int _pulseGapMicros = 300;
     float _stepsPerMM;
     int _limit_move_out_steps;
 

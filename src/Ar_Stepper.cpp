@@ -65,11 +65,13 @@ void Ar_Stepper::takeStep()
         _currentPosStep--;
         // _currentPosMM -= 1.0 / _stepsPerMM;
     }
+    delayMicroseconds(_pulseGapMicros);
 }
 
 void Ar_Stepper::setPulseWidth(int tim)
 {
-    _pulseWidthMicros = (float)tim / 2.0;
+    // _pulseGapMicros = (float)tim / 2.0;
+    _pulseGapMicros = tim;
 }
 
 void Ar_Stepper::setHomeMoveOut(int steps)
@@ -84,9 +86,9 @@ void Ar_Stepper::setSpeedInMMPerSecond(float speed_mm_per_sec)
     int steps_per_second = speed_mm_per_sec * _stepsPerMM;
 
     // Calculate the pulse width in microseconds (1 second = 1,000,000 microseconds)
-    _pulseWidthMicros = 1000000 / steps_per_second;
-
-    _pulseWidthMicros = (float)_pulseWidthMicros/2.0;
+    _pulseGapMicros = 1000000 / steps_per_second;
+    _pulseGapMicros -= (_pulseWidthMicros * 2 );
+    // _pulseGapMicros = (float)_pulseGapMicros/2.0;
 }
 
 void Ar_Stepper::setStepsPerMM(float stepsPerMM)
@@ -120,36 +122,59 @@ void Ar_Stepper::resetSteps()
 
 void Ar_Stepper::moveTo(float mm)
 {
-    _currentPosMM = _currentPosStep / _stepsPerMM;
-    float distance = mm - _currentPosMM;
-    moveBy(distance);
-}
+    long stepsToMove = 0;
 
-void Ar_Stepper::moveBy(float mm)
-{
-    long stepsToMove = mm * _stepsPerMM;
-
-    if (_maxLengthMM > 0)
+    if (mm > _maxLengthMM)
     {
-        float newPosMM = _currentPosMM + mm;
-        if (newPosMM < _maxLengthMM)
-        {
-            stepsToMove = (_maxLengthMM - _currentPosMM) * _stepsPerMM;
-        }
+        stepsToMove = (_maxLengthMM - getPosition()) * _stepsPerMM;
+    }
+    else 
+    {
+        stepsToMove = mm * _stepsPerMM;
     }
 
-    if (stepsToMove > 0) {
+    stepsToMove = stepsToMove - _currentPosStep; 
+
+    if (stepsToMove > 0) 
+    {
         dirCW();
-    } else {
+    } 
+    else 
+    {
         dirCCW();
     }
 
     for (long i = 0; i < abs(stepsToMove); i++) 
     {
-        if (digitalRead(_limitSwitchPin) == HIGH)
+        if (digitalRead(_limitSwitchPin) == HIGH && _currentPosStep >= 0)
         {
             takeStep();
         }
+    }
+}
+
+
+void Ar_Stepper::moveBy(float mm)
+{
+    moveTo(getPosition() + mm);
+}
+
+void Ar_Stepper::asyncTakeStep()
+{
+    digitalWrite(_stepPin, HIGH);
+    delayMicroseconds(_pulseWidthMicros);
+    digitalWrite(_stepPin, LOW);
+    delayMicroseconds(_pulseWidthMicros);
+
+    if (inc == true)
+    {
+        _currentPosStep++;
+        // _currentPosMM += 1.0 / _stepsPerMM;
+    }
+    else
+    {
+        _currentPosStep--;
+        // _currentPosMM -= 1.0 / _stepsPerMM;
     }
 }
 
@@ -172,16 +197,16 @@ bool Ar_Stepper::asyncRun()
         return false; 
     }
 
-    if (micros() - _lastStepTime >= _pulseWidthMicros) 
+    if (micros() - _lastStepTime >= _pulseGapMicros) 
     {
         _lastStepTime = micros(); 
 
         if (_currentPosStep < _targetPositionStep) {
             dirCW();
-            takeStep();
+            asyncTakeStep();
         } else if (_currentPosStep > _targetPositionStep) {
             dirCCW();
-            takeStep();
+            asyncTakeStep();
         }
 
         // Check if the target is reached
