@@ -34,7 +34,7 @@ public:
     void asyncMoveTo(float mm);
     void asyncMoveBy(float mm);
     bool asyncRun();
-    void Ar_Stepper::stop();
+    void stop();
 
     void setHoming(int limitSwitchPin, float homingSpeed);
     void home();
