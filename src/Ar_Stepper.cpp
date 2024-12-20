@@ -232,6 +232,13 @@ void Ar_Stepper::setHoming(int limitSwitchPin, float homingSpeed)
     pinMode(_limitSwitchPin, INPUT_PULLUP);
 }
 
+void Ar_Stepper::stop()
+{
+    _asyncMoving = false;
+    _targetPositionStep = _currentPosStep;
+    disable(); 
+}
+
 void Ar_Stepper::home()
 {
     if (!_homingEnabled) {
